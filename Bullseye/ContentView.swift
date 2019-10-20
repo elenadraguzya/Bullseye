@@ -10,21 +10,23 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State var alertIsVisible: Bool = false
-    @State var sliderValue: Double = 50.0
+    @State var alertIsVisible = false
+    @State var sliderValue = 50.0
+    @State var target = Int.random(in: 1...100)
+    @State var score = 0
     
     var body: some View {
         VStack {
             Spacer()
             HStack {
                 Text("Put the bullseye as close as you can to:")
-                Text("100")
+                Text("\(target)")
             }
             
             Spacer()
             HStack {
                 Text("1")
-                Slider(value: self.$sliderValue, in: 1...100)
+                Slider(value: $sliderValue, in: 1...100)
                 Text("100")
             }
             
@@ -32,12 +34,12 @@ struct ContentView: View {
             Button(action: {
                 print("Button Pressed")
                 self.alertIsVisible = true
+                self.score = self.score + self.pointsForCurrentRound()
             }) {
                 Text(/*@START_MENU_TOKEN@*/"Hit Me"/*@END_MENU_TOKEN@*/)
             }
             .alert(isPresented: $alertIsVisible) { () -> Alert in
-                let roundedValue: Int = Int(self.sliderValue.rounded())
-                return Alert(title: Text("Hello There"), message: Text("The slider's value is \(roundedValue)."), dismissButton: .default(Text("Ok")))
+                return Alert(title: Text("Hello There"), message: Text("The slider's value is \(sliderValueRounded()).\n" + "You scored \(pointsForCurrentRound()) points this round."), dismissButton: .default(Text("Ok")))
             }
             
             Spacer()
@@ -47,7 +49,7 @@ struct ContentView: View {
                 }
                 Spacer()
                 Text("Score:")
-                Text("999999")
+                Text("\(score)")
                 Spacer()
                 Text("Round:")
                 Text("999")
@@ -58,6 +60,14 @@ struct ContentView: View {
             }
             .padding(.bottom, 20)
         }
+    }
+    
+    func sliderValueRounded() -> Int {
+        Int(sliderValue.rounded())
+    }
+    
+    func pointsForCurrentRound() -> Int {
+        100 - abs(target - sliderValueRounded())
     }
 }
 
