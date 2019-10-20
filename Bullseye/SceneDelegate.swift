@@ -2,7 +2,7 @@
 //  SceneDelegate.swift
 //  Bullseye
 //
-//  Created by Olena on 19.10.2019.
+//  Created by Elena Draguzya on 19.10.2019.
 //  Copyright © 2019 Elena Draguzya. All rights reserved.
 //
 
